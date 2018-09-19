@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="574.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.donntu.kp.server.ui.Controller">
+    <children>
+        <TextArea fx:id="logTA" editable="false" layoutX="464.0" layoutY="74.0" prefHeight="475.0" prefWidth="413.0"
+                  AnchorPane.rightAnchor="14.0">
+            <font>
+                <Font size="15.0"/>
+            </font>
+        </TextArea>
+        <Circle fx:id="serverIndicator" fill="#ff1f1f" layoutX="24.0" layoutY="34.0" radius="10.0" stroke="BLACK"
+                strokeType="INSIDE" AnchorPane.leftAnchor="14.0"/>
+        <Button fx:id="startBT" layoutX="717.0" layoutY="15.0" mnemonicParsing="false" text="Запустить сервер"
+                AnchorPane.leftAnchor="717.0" AnchorPane.rightAnchor="14.0">
+            <font>
+                <Font size="17.0"/>
+            </font>
+        </Button>
+        <Label layoutX="52.0" layoutY="21.0" text="Состояние сервера" AnchorPane.leftAnchor="52.0">
+            <font>
+                <Font size="17.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="portTF" layoutX="464.0" layoutY="15.0" maxWidth="-Infinity" minWidth="-Infinity"
+                   prefHeight="38.0" prefWidth="220.0" promptText="Порт" AnchorPane.rightAnchor="207.0">
+            <font>
+                <Font size="17.0"/>
+            </font>
+        </TextField>
+        <ListView fx:id="objectsLW" layoutX="14.0" layoutY="74.0" prefHeight="475.0" prefWidth="441.0"
+                  AnchorPane.leftAnchor="14.0"/>
+    </children>
+</AnchorPane>

@@ -1,6 +1,7 @@
 package com.donntu.kp.server;
 
 import com.donntu.kp.server.logger.Log;
+import com.donntu.kp.server.observer.IObserver;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -15,7 +16,17 @@ public class Server extends Thread {
     private int port;
     private int buffer = 1024;
     private List<String> caughtStrings = new ArrayList<>();
+    private List<IObserver> observers = new ArrayList<>();
 
+    public void subscribe(IObserver observer) {
+        observers.add(observer);
+    }
+
+    private void notifySubscribers(String string) {
+        for (IObserver observer : observers) {
+            observer.update(string);
+        }
+    }
 
     public Server(int port) {
         this.port = port;
@@ -40,6 +51,7 @@ public class Server extends Thread {
             if (!x.equals("")) {
                 Log.getInstance().log("Принята строка (" + x + ")");
                 caughtStrings.add(x);
+                notifySubscribers(x);
             }
         }
     }

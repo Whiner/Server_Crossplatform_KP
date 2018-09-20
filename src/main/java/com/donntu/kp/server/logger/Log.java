@@ -1,7 +1,7 @@
 package com.donntu.kp.server.logger;
 
 
-import com.donntu.kp.server.logger.observer.IObserver;
+import com.donntu.kp.server.observer.IObserver;
 
 import java.util.ArrayList;
 import java.util.Date;

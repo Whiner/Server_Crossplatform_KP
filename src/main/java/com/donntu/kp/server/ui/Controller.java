@@ -2,7 +2,7 @@ package com.donntu.kp.server.ui;
 
 import com.donntu.kp.server.Main;
 import com.donntu.kp.server.logger.Log;
-import com.donntu.kp.server.logger.observer.TextAreaObserver;
+import com.donntu.kp.server.observer.TextAreaObserver;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -46,6 +46,7 @@ public class Controller {
             } else {
                 model.stopServer();
                 Log.getInstance().log("Сервер остановлен");
+                Log.getInstance().log("Всего создано " + model.getCreatedCount() + " объектов");
                 serverIndicator.setFill(new Color(1, 0.3, 0.3, 1));
                 startBT.setText("Запустить сервер");
             }
@@ -56,6 +57,7 @@ public class Controller {
     @FXML
     void initialize() {
         Main.setModel(model);
+        model.subscribeListView(objectsLW);
         setOnButtonAction();
         Log.getInstance().subscribe(new TextAreaObserver(logTA));
         portTF.setText(String.valueOf(port));

@@ -7,15 +7,14 @@ import com.donntu.kp.server.datawork.creations.interfaces.Creation;
 import com.donntu.kp.server.datawork.creations.interfaces.Mammal;
 import com.donntu.kp.server.logger.Log;
 
-public class InstanceCreator extends Thread {
+import java.util.Objects;
 
-    private String[] split;
-    private Class<? extends Creation> creationType;
+public class InstanceCreator extends Thread {
+    private String string;
     private Creation created;
 
-    public InstanceCreator(String[] split, Class<? extends Creation> creationType) {
-        this.split = split;
-        this.creationType = creationType;
+    public InstanceCreator(String string) {
+        this.string = string;
     }
 
     public Creation getCreated() {
@@ -24,9 +23,16 @@ public class InstanceCreator extends Thread {
 
     @Override
     public void run() {
-
+        String[] split;
         try {
-            if (creationType.newInstance() instanceof Bird) {
+            split = parse(string);
+        } catch (Exception e) {
+            Log.getInstance().log("Ошибка разбиения строки: " + e.getMessage());
+            return;
+        }
+        try {
+            Creation creation = Objects.requireNonNull(checkClass(split[0])).newInstance();
+            if (creation instanceof Bird) {
                 Log.getInstance().log("Поток " + getName() + " создал BIRD");
                 created = new Bird(
                         split[1],
@@ -38,7 +44,7 @@ public class InstanceCreator extends Thread {
                         Boolean.valueOf(split[7]),
                         Boolean.valueOf(split[8]),
                         split[9]);
-            } else if (creationType.newInstance() instanceof Mammal) {
+            } else if (creation instanceof Mammal) {
                 Log.getInstance().log("Поток " + getName() + " создал MAMMAL");
                 created = new Mammal(
                         split[1],
@@ -57,5 +63,21 @@ public class InstanceCreator extends Thread {
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    private Class<? extends Creation> checkClass(String string) {
+        switch (string) {
+            case "BIRD":
+                return Bird.class;
+            case "MAMMAL":
+                return Mammal.class;
+            default:
+                return null;
+        }
+    }
+
+    private String[] parse(String string) throws Exception {
+        return Spliter.split(string);
+
     }
 }

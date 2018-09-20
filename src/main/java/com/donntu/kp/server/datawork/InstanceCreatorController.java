@@ -1,58 +1,52 @@
 package com.donntu.kp.server.datawork;
 
-import com.donntu.kp.server.datawork.creations.interfaces.Bird;
 import com.donntu.kp.server.datawork.creations.interfaces.Creation;
-import com.donntu.kp.server.datawork.creations.interfaces.Mammal;
 import com.donntu.kp.server.logger.Log;
+import com.donntu.kp.server.observer.IObserver;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InstanceCreatorController {
-    private static List<InstanceCreator> instanceCreators = new ArrayList<>();
-    private static List<String> strings = new ArrayList<>();
-    private static List<Creation> creations = new ArrayList<>();
+public class InstanceCreatorController implements IObserver {
+    private List<Creation> creations = new ArrayList<>();
+    private List<IObserver> observers = new ArrayList<>();
 
-    public static void start() throws InterruptedException {
-        for (String line : strings) {
-            String[] split;
-            try {
-                split = Spliter.split(line);
-            } catch (Exception e) {
-                continue;
-            }
-            switch (split[0]) {
-                case "BIRD":
-                    Log.getInstance().log("Получен объект типа Bird");
-                    instanceCreators.add(new InstanceCreator(split, Bird.class));
-                    break;
-                case "MAMMAL":
-                    Log.getInstance().log("Получен объект типа Mammal");
-                    instanceCreators.add(new InstanceCreator(split, Mammal.class));
-                    break;
-                default:
-                    Log.getInstance().log("Тип объекта неопределен. (" + split[0] + ")");
-            }
-        }
+    public void subscribe(IObserver observer) {
+        observers.add(observer);
+    }
 
-        for (InstanceCreator instanceCreator : instanceCreators) {
-            instanceCreator.start();
-            Log.getInstance().log("Поток " + instanceCreator.getName() + " начал свою работу");
-        }
-        for (InstanceCreator instanceCreator : instanceCreators) {
-            instanceCreator.join();
-        }
+    private synchronized void notifyObservers(Creation creation) {
+        for (IObserver observer : observers) {
+            Platform.runLater(() ->
+                    observer.update(creation.getName() + " из \'" + creation.getArial() + "\'"));
 
-        for (InstanceCreator instanceCreator : instanceCreators) {
-            creations.add(instanceCreator.getCreated());
         }
     }
 
-    public static void addString(String string) {
-        strings.add(string);
+    public Creation start(InstanceCreator instanceCreator) throws InterruptedException {
+        instanceCreator.start();
+        Log.getInstance().log("Поток " + instanceCreator.getName() + " начал свою работу");
+        instanceCreator.join();
+        return instanceCreator.getCreated();
     }
 
-    public static List<Creation> getCreations() {
+    public List<Creation> getCreations() {
         return creations;
+    }
+
+    public synchronized void addString(String string) {
+        try {
+            Creation creation = start(new InstanceCreator(string));
+            notifyObservers(creation);
+            creations.add(creation);
+        } catch (InterruptedException e) {
+            Log.getInstance().log("Ошибка в потоке: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void update(String string) {
+        addString(string);
     }
 }

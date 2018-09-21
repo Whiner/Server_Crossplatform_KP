@@ -2,8 +2,11 @@ package com.donntu.kp.server.ui;
 
 import com.donntu.kp.server.Server;
 import com.donntu.kp.server.datawork.InstanceCreatorController;
+import com.donntu.kp.server.datawork.creations.interfaces.Creation;
 import com.donntu.kp.server.observer.ListViewObserver;
 import javafx.scene.control.ListView;
+
+import java.util.List;
 
 
 public class Model {
@@ -34,5 +37,9 @@ public class Model {
 
     public void subscribeListView(ListView<String> listView) {
         instanceCreatorController.subscribe(new ListViewObserver(listView));
+    }
+
+    public List<Creation> getCreations() {
+        return instanceCreatorController.getCreations();
     }
 }

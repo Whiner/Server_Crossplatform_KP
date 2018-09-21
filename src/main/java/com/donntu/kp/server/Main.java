@@ -1,5 +1,6 @@
 package com.donntu.kp.server;
 
+import com.donntu.kp.server.datawork.Serializer;
 import com.donntu.kp.server.ui.Model;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +28,7 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         primaryStage.setOnCloseRequest(event -> {
             model.stopServer();
+            Serializer.serialize(model.getCreations(), "serialized.bin");
         });
     }
 }

@@ -3,7 +3,6 @@ package com.donntu.kp.server.datawork;
 import com.donntu.kp.server.datawork.creations.interfaces.Creation;
 import com.donntu.kp.server.logger.Log;
 import com.donntu.kp.server.observer.IObserver;
-import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +17,7 @@ public class InstanceCreatorController implements IObserver {
 
     private synchronized void notifyObservers(Creation creation) {
         for (IObserver observer : observers) {
-            Platform.runLater(() ->
-                    observer.update(creation.getName() + " из \'" + creation.getArial() + "\'"));
+            observer.update(creation.getName() + " из \'" + creation.getArial() + "\'");
 
         }
     }

@@ -10,10 +10,6 @@ public class Model {
     private Server server = null;
     private InstanceCreatorController instanceCreatorController = new InstanceCreatorController();
 
-    public void subscribeListView(ListView<String> listView) {
-        instanceCreatorController.subscribe(new ListViewObserver(listView));
-    }
-
     public void startServer(int port) {
         if (server == null) {
             server = new Server(port);
@@ -34,5 +30,9 @@ public class Model {
             server.stopListen();
         }
         server = null;
+    }
+
+    public void subscribeListView(ListView<String> listView) {
+        instanceCreatorController.subscribe(new ListViewObserver(listView));
     }
 }

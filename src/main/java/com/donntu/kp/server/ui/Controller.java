@@ -23,7 +23,7 @@ public class Controller {
     private TextArea logTA;
 
     @FXML
-    private ListView<String> objectsLW;
+    private ListView<String> objectsLV;
 
     @FXML
     private Button startBT;
@@ -46,7 +46,7 @@ public class Controller {
             } else {
                 model.stopServer();
                 Log.getInstance().log("Сервер остановлен");
-                Log.getInstance().log("Всего создано " + model.getCreatedCount() + " объектов");
+                Log.getInstance().log("За сессию создано " + model.getCreatedCount() + " объектов");
                 serverIndicator.setFill(new Color(1, 0.3, 0.3, 1));
                 startBT.setText("Запустить сервер");
             }
@@ -57,7 +57,8 @@ public class Controller {
     @FXML
     void initialize() {
         Main.setModel(model);
-        model.subscribeListView(objectsLW);
+        objectsLV.setStyle("-fx-font-size: 16px");
+        model.subscribeListView(objectsLV);
         setOnButtonAction();
         Log.getInstance().subscribe(new TextAreaObserver(logTA));
         portTF.setText(String.valueOf(port));

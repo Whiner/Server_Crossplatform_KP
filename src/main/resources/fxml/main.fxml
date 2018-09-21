@@ -32,7 +32,7 @@
                 <Font size="17.0"/>
             </font>
         </TextField>
-        <ListView fx:id="objectsLW" layoutX="14.0" layoutY="74.0" prefHeight="475.0" prefWidth="441.0"
+        <ListView fx:id="objectsLV" layoutX="14.0" layoutY="74.0" prefHeight="475.0" prefWidth="431.0"
                   AnchorPane.leftAnchor="14.0"/>
     </children>
 </AnchorPane>

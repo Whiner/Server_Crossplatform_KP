@@ -1,5 +1,6 @@
 package com.donntu.kp.server.observer;
 
+import javafx.application.Platform;
 import javafx.scene.control.ListView;
 
 public class ListViewObserver implements IObserver {
@@ -11,6 +12,6 @@ public class ListViewObserver implements IObserver {
 
     @Override
     public synchronized void update(String string) {
-        listView.getItems().add(string);
+        Platform.runLater(() -> listView.getItems().add(string));
     }
 }

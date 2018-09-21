@@ -1,9 +1,9 @@
 package com.donntu.kp.server.observer;
 
+import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 
 public class TextAreaObserver implements IObserver {
-
     private TextArea textField;
 
     public TextAreaObserver(TextArea textField) {
@@ -12,6 +12,8 @@ public class TextAreaObserver implements IObserver {
 
     @Override
     public synchronized void update(String string) {
-        textField.appendText(string + "\n");
+        Platform.runLater(() ->
+                textField.appendText(string + "\n")
+        );
     }
 }
